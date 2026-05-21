@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Childcare Operations Cloud</title>
+  <style>
+    :root {
+      --bg: #f7f2ea;
+      --paper: #fffaf4;
+      --ink: #1d221d;
+      --muted: #606760;
+      --line: #ddd3c5;
+      --forest: #31463a;
+      --forest-deep: #223128;
+      --clay: #b66d49;
+      --sage: #dfe9e1;
+      --radius: 10px;
+      --shadow: 0 24px 50px rgba(41, 32, 18, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(223, 233, 225, 0.9), transparent 26%),
+        linear-gradient(180deg, #fbf7f1 0%, var(--bg) 100%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      background: rgba(251, 247, 241, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(221, 211, 197, 0.92);
+      z-index: 10;
+    }
+
+    .topbar-inner,
+    .section-head,
+    .hero-actions,
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .topbar-inner {
+      padding: 16px 0;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .eyebrow,
+    .brand-mark,
+    .mini {
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.76rem;
+    }
+
+    .eyebrow,
+    .brand-mark {
+      color: var(--clay);
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: flex-end;
+      max-width: 720px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .nav a,
+    .btn,
+    .btn-secondary {
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      font-size: 0.93rem;
+      border-radius: 999px;
+      padding: 11px 16px;
+      transition: transform 160ms ease;
+      white-space: nowrap;
+    }
+
+    .nav a {
+      color: var(--muted);
+    }
+
+    .btn,
+    .btn-secondary {
+      display: inline-block;
+      border: 1px solid transparent;
+    }
+
+    .btn {
+      background: var(--forest);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      border-color: var(--line);
+    }
+
+    .btn:hover,
+    .btn-secondary:hover,
+    .nav a:hover {
+      transform: translateY(-1px);
+    }
+
+    section {
+      padding: 28px 0 0;
+    }
+
+    .hero {
+      padding-top: 42px;
+    }
+
+    .hero-grid,
+    .benefits,
+    .plans,
+    .steps {
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: start;
+    }
+
+    .hero-copy,
+    .hero-panel,
+    .benefit,
+    .plan,
+    .step-panel,
+    .cta {
+      background: var(--paper);
+      border: 1px solid rgba(221, 211, 197, 0.95);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-copy,
+    .hero-panel,
+    .benefit,
+    .plan,
+    .step-panel,
+    .cta {
+      padding: 30px;
+    }
+
+    .hero-copy {
+      background:
+        linear-gradient(135deg, rgba(223, 233, 225, 0.86), rgba(255, 250, 244, 0.96)),
+        var(--paper);
+    }
+
+    .visual {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      border: 1px solid rgba(221, 211, 197, 0.95);
+      display: block;
+      box-shadow: 0 10px 24px rgba(41, 32, 18, 0.08);
+    }
+
+    .hero-visual {
+      margin-top: 18px;
+    }
+
+    h1 {
+      margin-top: 14px;
+      font-size: clamp(2.4rem, 4.4vw, 4.6rem);
+      line-height: 0.98;
+      max-width: 12ch;
+      text-wrap: balance;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      line-height: 1;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      line-height: 1.15;
+    }
+
+    .lead,
+    .section-head p,
+    .muted,
+    .benefit p,
+    .plan p,
+    .step-panel p,
+    .footer {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .lead {
+      max-width: 54ch;
+      margin-top: 18px;
+      font-size: 1.02rem;
+    }
+
+    .hero-actions {
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      margin-top: 26px;
+    }
+
+    .hero-points {
+      display: grid;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .hero-points div,
+    .plan ul li,
+    .step {
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    }
+
+    .hero-points div {
+      padding-top: 12px;
+      border-top: 1px solid rgba(29, 34, 29, 0.12);
+    }
+
+    .hero-panel {
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .hero-panel strong {
+      font-size: 2rem;
+      color: var(--forest-deep);
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .list-item,
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 13px 14px;
+      background: #fff;
+    }
+
+    .section-head {
+      align-items: end;
+      margin-bottom: 18px;
+    }
+
+    .section-head p {
+      max-width: 48ch;
+    }
+
+    .benefits,
+    .plans {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .benefit .visual {
+      margin-top: 14px;
+      margin-bottom: 14px;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+
+    .plan.featured {
+      background:
+        linear-gradient(180deg, rgba(223, 233, 225, 0.56), rgba(255, 250, 244, 0.96)),
+        var(--paper);
+      border-color: rgba(49, 70, 58, 0.32);
+    }
+
+    .price {
+      margin: 10px 0 6px;
+      font-size: 2rem;
+      color: var(--forest-deep);
+    }
+
+    .mini {
+      color: var(--clay);
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .plan ul {
+      margin: 16px 0 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .steps {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .step-panel .list {
+      margin-top: 16px;
+    }
+
+    .cta {
+      background:
+        linear-gradient(135deg, rgba(49, 70, 58, 0.97), rgba(35, 49, 41, 0.98)),
+        var(--forest);
+      color: #fff;
+      margin-top: 10px;
+    }
+
+    .reassurance-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .reassurance-card {
+      background: var(--paper);
+      border: 1px solid rgba(221, 211, 197, 0.95);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .reassurance-card h3 {
+      margin-top: 12px;
+      margin-bottom: 8px;
+    }
+
+    .reassurance-card p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .cta p {
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 12px;
+      max-width: 46ch;
+    }
+
+    .cta .hero-actions {
+      margin-top: 22px;
+    }
+
+    .cta .btn {
+      background: #fff;
+      color: var(--forest-deep);
+    }
+
+    .cta .btn-secondary {
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .footer {
+      padding: 28px 0 40px;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .steps,
+      .reassurance-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        max-width: 14ch;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .shell {
+        width: min(100% - 20px, 1120px);
+      }
+
+      .topbar-inner,
+      .section-head,
+      .footer {
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .nav {
+        width: 100%;
+        max-width: 100%;
+        justify-content: flex-start;
+        padding-bottom: 2px;
+      }
+
+      .benefits,
+      .plans {
+        grid-template-columns: 1fr;
+      }
+
+      .nav a,
+      .nav .btn,
+      .nav .btn-secondary {
+        width: auto;
+        flex: 0 0 auto;
+        text-align: center;
+      }
+
+      .hero-actions {
+        width: 100%;
+      }
+
+      .hero-actions .btn,
+      .hero-actions .btn-secondary {
+        width: 100%;
+        text-align: center;
+      }
+
+      .hero-copy,
+      .hero-panel,
+      .benefit,
+      .plan,
+      .step-panel,
+      .cta {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <div class="brand">
+        <span class="brand-mark">Childcare Management Software</span>
+        <strong>Childcare Operations Cloud</strong>
+      </div>
+      <nav class="nav">
+        <a href="#benefits">Benefits</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#how-it-works">How It Works</a>
+        <a class="btn" href="#start">Book a Demo</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-grid">
+        <article class="hero-copy">
+          <span class="eyebrow">Childcare management software for owners</span>
+          <h1>Run your childcare center in one place.</h1>
+          <p class="lead">Manage child records, staff, billing, forms, and daily tasks with simple software built for childcare teams.</p>
+          <img
+            class="visual hero-visual"
+            src="https://res.cloudinary.com/dozcy2jve/image/upload/v1779312195/images/Hero_banner_image_dd30do.png"
+            alt="Childcare team using a warm and organized software dashboard"
+            loading="eager"
+            decoding="async"
+          />
+          <div class="hero-actions">
+            <a class="btn" href="#start">Book a Demo</a>
+            <a class="btn-secondary" href="#pricing">See Pricing</a>
+          </div>
+          <div class="hero-points">
+            <div><strong>Stay organized</strong><br />Keep records and billing together.</div>
+            <div><strong>Save staff time</strong><br />Make daily work easier to manage.</div>
+            <div><strong>Grow with confidence</strong><br />Use one system for one center or many.</div>
+          </div>
+        </article>
+
+        <aside class="hero-panel">
+          <span class="eyebrow">Simple offer</span>
+          <h2>Setup once. Bill monthly.</h2>
+          <p class="muted">A clear offer for childcare owners who want less confusion and better daily control.</p>
+          <strong>$299/mo</strong>
+          <span class="mini">$1,500 one-time setup</span>
+          <div class="list">
+            <div class="list-item">Child and parent records</div>
+            <div class="list-item">Staff logins and center access</div>
+            <div class="list-item">Billing, forms, and uploaded files</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="benefits">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Benefits</span>
+          <h2>Less chaos. More control.</h2>
+        </div>
+        <p>Give owners and staff one simple system for records, billing, and daily work.</p>
+      </div>
+      <div class="benefits">
+        <article class="benefit">
+          <span class="eyebrow">Records</span>
+          <h3>Keep key details in one place.</h3>
+          <img
+            class="visual"
+            src="https://res.cloudinary.com/dozcy2jve/image/upload/v1779312209/images/Discovery_value_card_visual_myflml.png"
+            alt="Organized childcare records and workflow overview"
+            loading="lazy"
+            decoding="async"
+          />
+          <p>Child profiles, parent details, forms, and notes stay easier to manage.</p>
+        </article>
+        <article class="benefit">
+          <span class="eyebrow">Team flow</span>
+          <h3>Make daily work easier.</h3>
+          <img
+            class="visual"
+            src="https://res.cloudinary.com/dozcy2jve/image/upload/v1779312236/images/Character_value_card_visual_gpmfzw.png"
+            alt="Staff-friendly daily center routine and values"
+            loading="lazy"
+            decoding="async"
+          />
+          <p>Give staff a clearer flow for attendance, forms, and follow-up.</p>
+        </article>
+        <article class="benefit">
+          <span class="eyebrow">Billing</span>
+          <h3>Simplify payment follow-up.</h3>
+          <p>Track setup payments, monthly plans, and reminders in one place.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="reassurance">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Parent trust</span>
+          <h2>Built to feel safe, clear, and dependable.</h2>
+        </div>
+        <p>Owners and teams work faster when families can see a reliable system behind every update.</p>
+      </div>
+      <div class="reassurance-grid">
+        <article class="reassurance-card">
+          <img
+            class="visual"
+            src="https://res.cloudinary.com/dozcy2jve/image/upload/v1779312257/images/Parent_reassurance_section_image_wxmkgi.png"
+            alt="Parent reassurance visual showing trust and confidence"
+            loading="lazy"
+            decoding="async"
+          />
+          <h3>Increase family confidence</h3>
+          <p>Keep records, forms, and communication history organized so your center looks professional at every step.</p>
+        </article>
+        <article class="reassurance-card">
+          <img
+            class="visual"
+            src="https://res.cloudinary.com/dozcy2jve/image/upload/v1779312287/images/Contact_section_visual_joz2tc.png"
+            alt="Friendly childcare team contact and support visual"
+            loading="lazy"
+            decoding="async"
+          />
+          <h3>Make support easy to reach</h3>
+          <p>Give your team one clear place to work, and give owners a direct way to track setup, billing, and account status.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Pricing</span>
+          <h2>One-time setup. Then a monthly plan.</h2>
+        </div>
+        <p>Simple to explain, simple to sell, and easy for clients to understand.</p>
+      </div>
+      <div class="plans">
+        <article class="plan">
+          <span class="eyebrow">Starter</span>
+          <div class="price">$299/mo</div>
+          <span class="mini">$1,500 one-time setup</span>
+          <p>For one center that wants a simpler way to stay organized.</p>
+          <ul>
+            <li>1 center</li>
+            <li>Owner and staff logins</li>
+            <li>Child and parent records</li>
+            <li>Basic reports</li>
+          </ul>
+        </article>
+        <article class="plan featured">
+          <span class="eyebrow">Growth</span>
+          <div class="price">$599/mo</div>
+          <span class="mini">$3,000 one-time setup</span>
+          <p>For growing childcare businesses that need more access and better tracking.</p>
+          <ul>
+            <li>Up to 3 centers</li>
+            <li>Different staff access levels</li>
+            <li>Billing and form uploads</li>
+            <li>Priority support</li>
+          </ul>
+        </article>
+        <article class="plan">
+          <span class="eyebrow">Multi-Site</span>
+          <div class="price">$1,200+/mo</div>
+          <span class="mini">Custom setup</span>
+          <p>For multi-location groups that need more support and reporting.</p>
+          <ul>
+            <li>Multiple locations</li>
+            <li>Custom workflows</li>
+            <li>Advanced reports</li>
+            <li>Hands-on support</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="how-it-works">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">How it works</span>
+          <h2>From first payment to live account.</h2>
+        </div>
+        <p>The owner pays for setup, you prepare the account, and the monthly plan starts when the center is live.</p>
+      </div>
+      <div class="steps">
+        <article class="step-panel">
+          <span class="eyebrow">Owner journey</span>
+          <h3>Keep the buying process simple.</h3>
+          <div class="list">
+            <div class="step">1. Book a demo and choose a plan.</div>
+            <div class="step">2. Pay the one-time setup fee.</div>
+            <div class="step">3. Launch the center account.</div>
+          </div>
+        </article>
+        <article class="step-panel">
+          <span class="eyebrow">What you provide</span>
+          <h3>You run the service behind the scenes.</h3>
+          <div class="list">
+            <div class="step">Secure logins and account setup</div>
+            <div class="step">Records, files, and billing tools</div>
+            <div class="step">Monthly billing and support</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="start">
+      <article class="cta">
+        <span class="eyebrow">Ready to sell</span>
+        <h2>Give childcare owners a simpler way to run their center.</h2>
+        <p>A cleaner message, a clearer offer, and a page that is easier to trust at a glance.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#pricing">See the Offer</a>
+          <a class="btn-secondary" href="#how-it-works">See the Setup Flow</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="shell footer">
+    <div>Childcare Operations Cloud</div>
+    <div>Sales landing page concept</div>
+  </footer>
+</body>
+</html>
