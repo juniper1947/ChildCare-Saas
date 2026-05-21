@@ -15,10 +15,12 @@ export default function LoginPage() {
 
     try {
       const supabase = createSupabaseBrowserClient();
+      const configuredBaseUrl = process.env.NEXT_PUBLIC_BASE_URL || window.location.origin;
+      const callbackBase = configuredBaseUrl.replace(/\/$/, '');
       const { error } = await supabase.auth.signInWithOtp({
         email: email.trim(),
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard`
+          emailRedirectTo: `${callbackBase}/auth/callback?next=/dashboard`
         }
       });
 
