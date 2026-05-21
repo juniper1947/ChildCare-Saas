@@ -1,7 +1,7 @@
-import { requireSession } from '@/lib/auth/session';
+import { requireRole } from '@/lib/auth/session';
 
 export default async function OwnerPage() {
-  await requireSession();
+  await requireRole(['owner']);
 
   return (
     <main className="container">

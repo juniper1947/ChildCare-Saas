@@ -1,15 +1,8 @@
 import { redirect } from 'next/navigation';
-import type { User } from '@supabase/supabase-js';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { isAppRole, type AppRole } from '@/lib/auth/roles';
 
 export async function requireSession() {
-  if (process.env.AUTH_BYPASS_ENABLED === 'true') {
-    return {
-      id: 'bypass-user',
-      email: process.env.AUTH_BYPASS_EMAIL || 'bypass@local.dev'
-    } as User;
-  }
-
   const supabase = await createSupabaseServerClient();
   const { data } = await supabase.auth.getUser();
 
@@ -18,4 +11,34 @@ export async function requireSession() {
   }
 
   return data.user;
+}
+
+export async function getCurrentUserRole() {
+  const user = await requireSession();
+  const supabase = await createSupabaseServerClient();
+  const { data: membership } = await supabase
+    .from('user_memberships')
+    .select('role')
+    .eq('user_id', user.id)
+    .eq('is_active', true)
+    .order('created_at', { ascending: true })
+    .limit(1)
+    .maybeSingle();
+
+  if (!membership?.role || !isAppRole(membership.role)) {
+    return null;
+  }
+
+  return membership.role;
+}
+
+export async function requireRole(allowedRoles: AppRole[]) {
+  const user = await requireSession();
+  const role = await getCurrentUserRole();
+
+  if (!role || !allowedRoles.includes(role)) {
+    redirect('/dashboard');
+  }
+
+  return { user, role };
 }

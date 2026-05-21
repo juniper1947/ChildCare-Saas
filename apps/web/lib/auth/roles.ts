@@ -1,12 +1,13 @@
-import type { AppRole } from '@/types/roles';
+export const appRoles = ['owner', 'operator', 'admin', 'staff'] as const;
 
-const roleRank: Record<AppRole, number> = {
-  owner: 4,
-  operator: 3,
-  admin: 2,
-  staff: 1
-};
+export type AppRole = (typeof appRoles)[number];
 
-export function hasMinimumRole(current: AppRole, minimum: AppRole) {
-  return roleRank[current] >= roleRank[minimum];
+export function isAppRole(value: string): value is AppRole {
+  return appRoles.includes(value as AppRole);
+}
+
+export function defaultRouteForRole(role: AppRole) {
+  if (role === 'owner') return '/owner';
+  if (role === 'admin') return '/admin';
+  return '/dashboard';
 }

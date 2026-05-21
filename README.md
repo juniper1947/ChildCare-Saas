@@ -10,6 +10,14 @@ Production-focused B2B childcare operations platform for owners, operators, and 
 - `infra/stripe` - products/pricing/webhook notes
 - `infra/vercel` - deployment notes
 
+## Auth + Roles
+- Sign-in callback: `apps/web/app/auth/callback/route.ts`
+- Role-protected routes:
+  - `/owner` -> `owner`
+  - `/admin` -> `owner` or `admin`
+  - `/dashboard` -> `operator`, `admin`, or `staff`
+- Baseline seed: `infra/supabase/003_seed_baseline.sql`
+
 ## Legacy Files
 - `legacy-prototypes` - archive for old prototype/landing assets
 

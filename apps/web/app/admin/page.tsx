@@ -1,7 +1,7 @@
-import { requireSession } from '@/lib/auth/session';
+import { requireRole } from '@/lib/auth/session';
 
 export default async function AdminPage() {
-  await requireSession();
+  await requireRole(['owner', 'admin']);
 
   return (
     <main className="container">
