@@ -1,0 +1,136 @@
+ChildCare SaaS Worksheet Log
+Last Updated: 2026-05-22 (Asia/Manila)
+Owner: Project Team (Juniper + Codex)
+
+Purpose
+- Keep a plain-text history of work completed, in progress, and next tasks.
+- Track build/setup costs and operating costs.
+- Update this file after every meaningful change.
+
+==================================================
+1) Scope Summary
+==================================================
+- Product: B2B Childcare SaaS (owners, operators, CEOs)
+- Stack: Next.js, Supabase, Stripe, Resend SMTP, Vercel
+- Status: Foundation built; core business workflows still in progress
+
+==================================================
+2) Change Log (Newest First)
+==================================================
+[2026-05-22] Added worksheet log file (this file) for mandatory progress + cost tracking.
+[2026-05-22] Fixed magic-link callback URL generation to use NEXT_PUBLIC_BASE_URL.
+[2026-05-22] Ran/validated Supabase migration sequence guidance (001 -> 004).
+[2026-05-22] Added role-based auth routing:
+  - /owner -> owner
+  - /admin -> owner/admin
+  - /dashboard -> operator/admin/staff
+[2026-05-22] Added auth callback exchange route for Supabase magic links.
+[2026-05-22] Added baseline seed + membership role policy SQL scripts.
+[2026-05-22] Removed temporary auth bypass from app code.
+[2026-05-22] Repo pushed multiple times to main for deploy fixes.
+
+==================================================
+3) Completed
+==================================================
+- GitHub repo connected and pushing from local main.
+- Vercel project connected and deploying from apps/web.
+- Supabase project selected and active:
+  - Project ref: zgcjujklrdlgvdzlbnjq
+- Env vars configured (production path):
+  - NEXT_PUBLIC_SUPABASE_URL
+  - NEXT_PUBLIC_SUPABASE_ANON_KEY
+  - NEXT_PUBLIC_BASE_URL
+- Auth callback route implemented:
+  - apps/web/app/auth/callback/route.ts
+- Role scaffolding implemented:
+  - apps/web/lib/auth/roles.ts
+  - apps/web/lib/auth/session.ts
+- SQL files prepared and applied order documented:
+  - infra/supabase/001_initial_schema.sql
+  - infra/supabase/002_storage.sql
+  - infra/supabase/003_seed_baseline.sql
+  - infra/supabase/004_membership_role_policies.sql
+
+==================================================
+4) In Progress
+==================================================
+- Supabase auth email reliability (rate-limit issue on default sender)
+- SMTP setup for production-like auth testing (Resend recommended)
+
+==================================================
+5) Next Actions (Priority Order)
+==================================================
+1. Configure SMTP in Supabase (Resend)
+2. Verify magic-link login works for all roles
+3. Lock MVP functional scope by route + table
+4. Build CRUD workflows:
+   - children
+   - parents
+   - attendance
+   - documents
+5. Stripe setup fee + monthly subscription flow
+6. Owner/Admin dashboards with real data actions
+7. Production hardening + QA checklist
+
+==================================================
+6) Cost Worksheet (Estimated)
+==================================================
+Notes
+- Costs below are practical estimates for planning.
+- Actual pricing may vary by region, volume, and plan changes.
+
+One-Time Build Cost (Implementation)
+- Product setup + architecture + auth + roles + DB foundation: $2,500 - $6,000
+- Core workflows (children/parents/attendance/docs): $4,000 - $10,000
+- Billing integration (Stripe checkout + webhooks): $1,500 - $4,000
+- QA, hardening, launch prep: $1,000 - $3,000
+- Estimated build total: $9,000 - $23,000
+
+Monthly Operating Cost (Execution)
+- Vercel: $0 - $20+ (hobby/pro; scales with usage)
+- Supabase: $0 - $25+ (scales with DB/storage/auth volume)
+- Resend/Email provider: $0 - $20+ (depends on email volume)
+- Stripe: per-transaction fees (no fixed required base in many regions)
+- Monitoring/analytics/tools: $0 - $50+
+- Estimated monthly base total: $0 - $115+ before transaction growth
+
+Service Delivery (If Managed For Client)
+- Typical managed support retainer: $300 - $1,500+/month
+- Includes updates, monitoring, support, small feature iterations
+
+==================================================
+7) Risks / Blockers
+==================================================
+- Supabase default auth email rate limits can block login testing.
+- Local machine disk-space constraints may block local npm/build verification.
+- Redirect URL mismatch can break magic-link callbacks.
+
+==================================================
+8) Definition of Done (Phase 1)
+==================================================
+- Role login works reliably for owner/admin/operator/staff
+- SMTP configured and tested in production URL
+- Protected routes enforce intended role access
+- Seed + policy SQL reproducible and documented
+
+==================================================
+9) Backfilled History By Date (From Git)
+==================================================
+[2026-05-21]
+- Initial childcare SaaS foundation created (app, infra, docs, legacy archive paths).
+- Sales/landing direction and base app scaffold added.
+- macOS metadata artifacts removed and .gitignore improved.
+
+[2026-05-22]
+- Middleware typing fix for production build (Vercel build blocker resolved).
+- Vercel redeploy trigger commit pushed.
+- Magic-link callback route implemented for auth code exchange.
+- Login page upgraded with better sign-in handling and callback redirect.
+- Temporary auth bypass switch was added for testing, later removed.
+- Role-based route protection implemented:
+  - owner-only owner page
+  - owner/admin admin page
+  - operator/admin/staff dashboard
+- Supabase role seed and policy scripts added (003, 004).
+- Seed emails updated to real owner/admin/operator/staff accounts.
+- Login redirect switched to NEXT_PUBLIC_BASE_URL to avoid localhost callback links.
