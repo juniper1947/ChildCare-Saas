@@ -3,7 +3,7 @@
 
 with account_insert as (
   insert into business_accounts (legal_name, display_name, billing_email, onboarding_completed)
-  values ('Elite Childcare LLC', 'Elite Children', 'owner@elitechildren.com', true)
+  values ('Elite Childcare LLC', 'Elite Children', 'junniferross.uy@gmail.com', true)
   returning id
 ),
 center_insert as (
@@ -21,10 +21,10 @@ select
 from center_insert c
 join (
   values
-    ('owner@elitechildren.com', 'owner'),
-    ('admin@elitechildren.com', 'admin'),
-    ('operator@elitechildren.com', 'operator'),
-    ('staff@elitechildren.com', 'staff')
+    ('junniferross.uy@gmail.com', 'owner'),
+    ('JRAdmin@eliteschildren.com', 'admin'),
+    ('junnifer.uy@gmail.com', 'operator'),
+    ('Koneuy@gmail.com', 'staff')
 ) as seed(email, role) on true
 join auth.users u on lower(u.email) = lower(seed.email)
 on conflict (account_id, user_id) do update
