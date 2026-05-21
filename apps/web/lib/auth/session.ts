@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { createSupabaseServerClient } from '@/lib/supabase/server';
-import { isAppRole, type AppRole } from '@/lib/auth/roles';
+import { defaultRouteForRole, isAppRole, type AppRole } from '@/lib/auth/roles';
 
 export async function requireSession() {
   const supabase = await createSupabaseServerClient();
@@ -36,8 +36,12 @@ export async function requireRole(allowedRoles: AppRole[]) {
   const user = await requireSession();
   const role = await getCurrentUserRole();
 
-  if (!role || !allowedRoles.includes(role)) {
-    redirect('/dashboard');
+  if (!role) {
+    redirect('/auth/login');
+  }
+
+  if (!allowedRoles.includes(role)) {
+    redirect(defaultRouteForRole(role));
   }
 
   return { user, role };
